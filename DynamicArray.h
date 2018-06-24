@@ -2,13 +2,13 @@
 // Created by willi on 6/20/2018.
 //
 
-//TODO Finish Remove function.
+.
 //TODO Finish Exception.
 
 
 #ifndef MYDATASTRUCTS_DYNAMICARRAY_H
 #define MYDATASTRUCTS_DYNAMICARRAY_H
-class DynamicArrayException(){};
+//class DynamicArrayException(){};
 template <class T>
 class DynamicArray{
 protected:
@@ -39,7 +39,7 @@ DynamicArray<T>::~DynamicArray() {
 template<class T>
 void DynamicArray<T>::append(T e) {
     if(this->currIndex == this->limit){
-        limit = limit * 2;
+        limit = limit + (limit % 3);
         T *temp;
         temp = new T[limit];
 
@@ -58,13 +58,46 @@ void DynamicArray<T>::append(T e) {
     }
 }
 template<class T>
-void DynamicArray::remove(int i) {
+void DynamicArray<T>::remove(int i) {
+    if(i>=0 && i < currIndex + 1){
+        T *temp;
+        temp = new T[limit];
 
+        int x = 0;
+        int target = i + 1;
+
+        while(true){
+
+            if(x < i){
+                temp[x] = darr[x];
+                x++;
+            }
+            else if(x == i){
+                temp[x] = darr[target];
+                x++;
+            }
+            else if(x > i && x < currIndex){
+                target = target + 1;
+                temp[x] = darr[target];
+                x++;
+            }
+            else{
+                currIndex--;
+                break;
+            }
+        }
+        delete[] darr;
+        darr = temp;
+        delete[] temp;
+    }
+    else{
+        //throw DynamicArrayException();
+    }
 }
 template<class T>
-T& DynamicArray::operator[](unsigned int i) {
+T& DynamicArray<T>::operator[](unsigned int i) {
     if(i < 0 || i >= currIndex){
-        throw DynamicArrayException();
+        //throw DynamicArrayException();
     }
     else{
         return darr[i];
@@ -73,4 +106,3 @@ T& DynamicArray::operator[](unsigned int i) {
 
 
 #endif //MYDATASTRUCTS_DYNAMICARRAY_H
-
